@@ -1,0 +1,229 @@
+<html>
+    <head>
+        <title>Signup Page</title>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <style>
+body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Arial; margin: 0; padding: 0; border-radius: 5px}
+#message { background: white; width: 340px; height: 500px;margin: 90px auto 8px; padding: 32px 2px 16px; border-radius: 3px; margin-top: 70px; border-radius: 10px; font-family: Arial}
+#message h2 { color: #000000; font-size: 20px; margin: 0 0 8px; margin-left: 37%}
+#message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+#register {
+  align-self: flex-start;
+  display: grid;
+  padding: 5px 20px 100px;
+  width: 300px;
+  height: 50px;
+  color: #000000af;
+  border-radius: 5px;
+  
+}
+#username {
+    height: 120%;
+    border-radius: 5px;
+    border-color: #0000001c;
+}
+#empty-user {
+  font-size: small;
+  color: rgba(255, 0, 0, 0.486);
+}
+#email {
+    
+  align-self: auto;
+  border-width: 1%;
+  height: 120%;
+  border-color: #0000001c;
+}
+#empty-email {
+  font-size: small;
+  color: rgba(255, 0, 0, 0.486);
+}
+#pop-up {
+  display: none;
+}
+
+#password {
+  
+
+    height: 120%;
+    border-radius: 5px;
+    border-color: #0000001c;
+  
+}
+#empty-password {
+  font-size: small;
+  color: rgba(255, 0, 0, 0.486);
+}
+#submit {
+  margin-top: 10%;
+  margin-left: 67%;
+  width: 100px;
+  height: 30px;
+  background: rgb(26, 115, 232);
+  border-color: rgb(26, 115, 232);
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+
+}
+#confirm-password {
+    margin-top: 0%;
+    
+    border-radius: 5px;
+    border-color: #0000001c;
+
+
+}
+#login_href {
+    height: 0%;
+    border-radius: 5px;
+    border-color: #ffffff00;
+}
+#verify {
+  display: none;
+  color: #00000096;
+  
+}
+#checkyouremail {
+  margin-top: 10%;
+  font-size:large;
+  color: #00000096;
+}
+#quantity {
+  margin-left: 5%;
+  height: 5%;
+  width: 90%;
+  border-radius: 5px;
+  border-color: #00000057;
+  margin-top: 10%;
+}
+#submit_verify {
+  margin-top: 10%;
+  margin-left: 67%;
+  width: 100px;
+  height: 30px;   
+  background: rgb(26, 115, 232);
+  border-color: rgb(26, 115, 232);
+  border-radius: 5px;
+  color: rgb(255, 255, 255); 
+}
+
+#load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+@media (max-width: 600px) {
+  body, #message { margin-top: 0; background: white; box-shadow: none; }
+  body { border-top: 16px solid #ffa100; }
+}
+
+        </style>
+    </head>
+    <body>
+        <main id="main">
+
+            <div id="message">
+              <h2>
+                SIGN UP
+              </h2>
+              <form id="register">
+                <p>Name</p>
+                
+                <input type="text" placeholder="User Name" id='username' name="username">
+                <p id='empty-user'></p>
+                <p id='email_p'>Email</p>
+                <input type="email" placeholder="email" id='email' name="email">
+                <p id='empty-email'></p>
+                <p>Password</p>
+                <input type="password" placeholder="password" id="password" name="password">
+                <input type="password" placeholder="confirm password" id='confirm-password' name="confirm_password">
+                <p id='empty-password'></p>
+                <p>Already have an account?</p>
+                <a href="/login" id="login_href" BORDER=0>Login here</a>
+                <input type="button" value="Create" id="submit" onclick="click_submit()" onmouseover="mouseover()" onmouseout="mouseout()">
+
+              </form>
+              <form id="verify">
+                <p id='checkyouremail'>Check your email</p>
+                <p>We send you a verification code in your email.
+                  Send the code here:</p>
+                <input type="number" id="quantity" min=0>
+                <input type="submit" value="Verify" id="submit_verify" onmouseover="mouseover_verify()" onmouseout="mouseout_verify()">
+
+                </form>
+            </div>
+          </main>
+          
+
+
+        <script>
+            
+            function click_submit() {
+              document.getElementById('register').style.display = 'none'
+              $("#verify").fadeIn()
+              var regData = {
+                          username: $("#username").val(),
+                          password: $("#password").val(),
+                          confirm_password: $("#confirm-password").val(),
+                          email: $("#email").val(),
+                          
+                      }
+              $.post("/api/send_email", regData, function(res){
+
+              })
+            }
+            $(document).ready(function(){
+                $("#verify").submit(function(e){
+                    e.preventDefault() //Prevents page refresh
+
+
+                      e.preventDefault()
+                      var regData = {
+                          username: $("#username").val(),
+                          password: $("#password").val(),
+                          confirm_password: $("#confirm-password").val(),
+                          email: $("#email").val(),
+                          quantity: $("#quantity").val(),
+                      }
+
+                      $.post("/api/signup", regData, function(res){
+                      
+                        if(res.success === true){
+                            alert('Sucess!')
+                          
+                                  
+
+                                } else {
+                            if(res.reason) alert(res.reason)
+                            else alert("Unknown error")
+                        }
+                              })
+                            })
+                          })
+
+
+                    
+                
+            
+
+           
+                              
+
+
+          
+
+            function mouseout_verify() {
+              document.getElementById('submit_verify').style.backgroundColor = 'rgb(26, 115, 232)'
+            }
+            function mouseover_verify() {
+              document.getElementById('submit_verify').style.backgroundColor = 'rgb(15, 73, 150)'
+            }
+            function mouseout() {
+              document.getElementById('submit').style.backgroundColor = 'rgb(26, 115, 232)'
+            }
+            function mouseover() {
+              document.getElementById('submit').style.backgroundColor = 'rgb(15, 73, 150)'
+            }
+
+
+
+
+
+        </script>
+    </body>
+</html>

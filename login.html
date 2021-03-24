@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <title>Login Page</title>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <style>
+body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Arial; margin: 0; padding: 0; border-radius: 5px}
+#message { background: white; width: 340px; height: 500px;margin: 90px auto 8px; padding: 32px 2px 16px; border-radius: 3px; margin-top: 100px; border-radius: 10px; font-family: Arial}
+#message h2 { color: #000000; font-size: 20px; margin: 0 0 8px; margin-left: 37%}
+#message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+#login {
+  align-self: flex-start;
+  display: grid;
+  padding: 5px 20px 100px;
+  width: 300px;
+  height: 50px;
+  color: #000000af;
+  border-radius: 5px;
+  
+}
+#username {
+    height: 120%;
+    border-radius: 5px;
+    border-color: #0000001c;
+}
+#empty-user {
+  font-size: small;
+  color: rgba(255, 0, 0, 0.486);
+}
+#email {
+    
+  align-self: auto;
+  border-width: 1%;
+  height: 120%;
+  border-color: #0000001c;
+}
+#empty-email {
+  font-size: small;
+  color: rgba(255, 0, 0, 0.486);
+}
+
+#password {
+  
+
+    height: 120%;
+    border-radius: 5px;
+    border-color: #0000001c;
+  
+}
+#empty-password {
+  font-size: small;
+  color: rgba(255, 0, 0, 0.486);
+}
+#submit {
+  margin-top: 10%;
+  margin-left: 67%;
+  width: 100px;
+  height: 30px;
+  background: rgb(26, 115, 232);
+  border-color: rgb(26, 115, 232);
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+
+}
+
+#signup_href {
+    height: 0%;
+    border-radius: 5px;
+    border-color: #ffffff00;
+}
+#load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+@media (max-width: 600px) {
+  body, #message { margin-top: 0; background: white; box-shadow: none; }
+  body { border-top: 16px solid #ffa100; }
+}
+        </style>
+    </head>
+    <body>
+        <main id="main">
+            <div id="message">
+              <h2>
+                SIGN IN
+              </h2>
+              <form id="login">
+                <p>Name</p>
+                
+                <input type="text" placeholder="User Name" id='username'>
+                <p id='empty-user'></p>
+                <p>Email</p>
+                <input type="text" placeholder="email" id='email'>
+                <p id='empty-email'></p>
+                <p>Password</p>
+                <input type="password" placeholder="password" id="password">
+                <p id='empty-password'></p>
+
+                <p>Don't have an account?</p>
+                <a href="/signup" id="signup_href">Sign up here</a>
+                <input type="submit" value="Login" id="submit">
+                
+              </form>
+            </div>
+          </main>
+        <br>
+
+
+        <script>
+            $(document).ready(function(){
+                $("#login").submit(function(e){
+                    e.preventDefault() //Prevents page refresh
+                    
+                    var loginData = {
+                        username: $("#username").val(),
+                        password: $("#password").val(),
+                    }
+
+                    $.post("/api/login", loginData, function(res){
+                        if(res.success === true){
+                            alert("Success!")
+                        } 
+                        else {
+                            if(res.reason) alert(res.reason)
+                            else alert("Unknown error")
+                        }
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>
